@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppSelector } from "../../../core/store/hooks";
 
 import useAddressBook from "../../hooks/useAddressBook";
@@ -13,9 +13,8 @@ const AddressBook = () => {
   const { removeAddress, loadSavedAddresses, loading } = useAddressBook();
   const addressBookTitle = `📓 Address book (${addresses.length})`;
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadSavedAddresses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

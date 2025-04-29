@@ -14,7 +14,7 @@ import databaseService from "../../core/services/databaseService";
 export default function useAddressBook() {
   const dispatch = useAppDispatch();
   const addresses = useAppSelector(selectAddress);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   const updateDatabase = React.useCallback(() => {
     databaseService.setItem("addresses", addresses);
@@ -22,9 +22,11 @@ export default function useAddressBook() {
 
   return {
     /** Add address to the redux store */
-    addAddress: (address: Address) => {
+    addAddress: async (address: Address) => {
+      setLoading(true);
       dispatch(addAddress(address));
-      updateDatabase();
+      await databaseService.setItem("addresses", [...addresses, address]);
+      setLoading(false);
     },
     /** Remove address by ID from the redux store */
     removeAddress: (id: string) => {
